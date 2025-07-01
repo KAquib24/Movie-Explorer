@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 // Components
 import Hero from '../components/Hero'
 import Popular from '../components/Popular'
+import Genre from '../components/Genre'
 
 // pages
 
@@ -15,6 +16,7 @@ const Home = () => {
     <div>
       <Hero />
       <Popular />
+      <Genre />
     </div>
   )
 }

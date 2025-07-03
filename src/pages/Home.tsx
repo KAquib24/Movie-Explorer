@@ -3,6 +3,9 @@ import React, { Component } from 'react'
 import Hero from '../components/Hero'
 import Popular from '../components/Popular'
 import Genre from '../components/Genre'
+import Trending from '../components/Trending'
+import NewRelease from "../components/NewRelease"
+import Footer from '../components/Footer'
 
 // pages
 
@@ -17,6 +20,9 @@ const Home = () => {
       <Hero />
       <Popular />
       <Genre />
+      <Trending />
+      <NewRelease />
+      <Footer />
     </div>
   )
 }

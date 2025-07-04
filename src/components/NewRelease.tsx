@@ -8,7 +8,7 @@ const NewRelease = () => {
 
   useEffect(() => {
     // Fetch movies sorted by release date (latest first)
-    fetchMovies('/discover/movie', '&sort_by=release_date.desc').then(setMovies);
+    fetchMovies('/discover/movie', { sort_by: 'release_date.desc' }).then(res => setMovies(res.results));
   }, []);
 
   return (

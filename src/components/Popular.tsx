@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MovieCard from '../components/MovieCard';
 import { fetchMovies } from '../api/tmbd';
 import { Movie } from '../types/type';
+import { Link } from 'react-router-dom';
 
 const Popular = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -32,6 +33,14 @@ const Popular = () => {
               />
             ))}
 
+            <div className="flex justify-center mt-10">
+            <Link
+              to="/allmovies"
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 shadow-md"
+            >
+              Show More
+            </Link>
+          </div>
           </div>
         </div>
       </section>

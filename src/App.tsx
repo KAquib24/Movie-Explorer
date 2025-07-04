@@ -1,16 +1,20 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // pages
 import Home from './pages/Home';
+import Allmovies
 
 function App() {
   return (
-    <div className="App">
-      <Home />
-      
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/allmovies" element={<AllMovies />} />
+      </Routes>
+    </Router>
   );
 }
 

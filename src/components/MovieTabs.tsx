@@ -1,4 +1,3 @@
-// src/components/MovieTabs.tsx
 import React, { useState } from 'react';
 import { Download, Star } from 'lucide-react';
 
@@ -11,14 +10,15 @@ const MovieTabs = ({ overview }: { overview: string }) => {
         return (
           <div className="text-gray-300">
             <h2 className="text-white text-xl font-semibold mb-2">Overview</h2>
-            <p>{overview}</p>
+            <p className="leading-relaxed">{overview}</p>
           </div>
         );
       case 'download':
         return (
-          <div className="grid md:grid-cols-2 gap-6 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            {/* 4K Card */}
             <div className="bg-[#111827] text-white p-6 rounded-lg border border-gray-700">
-              <div className="flex justify-between mb-2">
+              <div className="flex justify-between items-center mb-2">
                 <h3 className="text-lg font-semibold">4K Ultra HD</h3>
                 <p className="text-red-400 font-bold">$19.99</p>
               </div>
@@ -29,8 +29,9 @@ const MovieTabs = ({ overview }: { overview: string }) => {
               </button>
             </div>
 
+            {/* 1080p Card */}
             <div className="bg-[#111827] text-white p-6 rounded-lg border border-gray-700">
-              <div className="flex justify-between mb-2">
+              <div className="flex justify-between items-center mb-2">
                 <h3 className="text-lg font-semibold">1080p HD</h3>
                 <p className="text-red-400 font-bold">$14.99</p>
               </div>
@@ -43,18 +44,26 @@ const MovieTabs = ({ overview }: { overview: string }) => {
           </div>
         );
       case 'reviews':
-        return <p className="text-gray-300">⭐ Reviews coming soon!</p>;
+        return (
+          <div className="text-gray-300">
+            <p>⭐ Reviews coming soon!</p>
+          </div>
+        );
       case 'similar':
-        return <p className="text-gray-300">🎬 Similar movies coming soon!</p>;
+        return (
+          <div className="text-gray-300">
+            <p>🎬 Similar movies coming soon!</p>
+          </div>
+        );
       default:
         return null;
     }
   };
 
   return (
-    <div className="text-white px-6 py-10 bg-black/70 backdrop-blur-md mt-10 rounded-lg">
+    <div className="text-white px-4 sm:px-6 md:px-10 py-10 bg-black/70 backdrop-blur-md mt-10 rounded-lg max-w-7xl mx-auto">
       {/* Tabs */}
-      <div className="flex gap-6 border-b border-gray-700 mb-6">
+      <div className="flex flex-wrap gap-4 sm:gap-6 border-b border-gray-700 mb-6">
         {['overview', 'download', 'reviews', 'similar'].map((tab) => (
           <button
             key={tab}
@@ -70,7 +79,7 @@ const MovieTabs = ({ overview }: { overview: string }) => {
         ))}
       </div>
 
-      {/* Content */}
+      {/* Tab Content */}
       {renderContent()}
     </div>
   );

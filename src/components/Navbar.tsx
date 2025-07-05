@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { use, useEffect, useState } from 'react';
 import { Film, Search, User } from 'lucide-react';
 
 const Navbar: React.FC = () => {
+const [searchQuery , setSearchQuery] = useState("")
+
+
+
   return (
 <header className="container mx-auto flex  justify-between items-center px-16 py-8">
           <div className="flex items-center space-x-2">
@@ -17,8 +21,9 @@ const Navbar: React.FC = () => {
         </nav>
         </div>
         <div className="icons flex gap-4 text-black ">
-            <Search className='h-6 w-6'/>
-            <User className='h-6 w-6'/>
+          <input type="text" className='px-[24px] py-[12px] rounded-3xl' placeholder='Search Any Movie...'/>
+            <Search className='h-6 w-6 cursor-pointer'/>
+            <User className='h-6 w-6 cursor-pointer'/>
         </div>
       </header>
   )

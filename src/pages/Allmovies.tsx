@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchMovies } from '../api/tmbd';
 import { Movie } from '../types/type';
+import { useSearchParams } from 'react-router-dom';
 
 const AllMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -8,16 +9,28 @@ const AllMovies = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('query');
 
   useEffect(() => {
     const getMovies = async () => {
       setLoading(true);
       setError(null);
-      
       try {
-        const response = await fetchMovies('/movie/popular', { page: currentPage });
-        if (!response.results) throw new Error('Invalid data format');
-        
+        let response;
+
+        if (query) {
+          // Search endpoint
+          response = await fetchMovies('/search/movie', {
+            query,
+            page: currentPage,
+          });
+        } else {
+          // Popular movies by default
+          response = await fetchMovies('/movie/popular', { page: currentPage });
+        }
+
+        if (!response?.results) throw new Error('Invalid data format');
         setMovies(response.results);
         setTotalPages(response.total_pages);
       } catch (err) {
@@ -29,7 +42,7 @@ const AllMovies = () => {
     };
 
     getMovies();
-  }, [currentPage]);
+  }, [currentPage, query]);
 
   const handlePrev = () => {
     if (currentPage > 1) setCurrentPage((p) => p - 1);
@@ -43,7 +56,9 @@ const AllMovies = () => {
     <section className="relative bg-gradient-to-br from-black/80 via-slate-900 py-10 min-h-screen">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm z-0" />
       <div className="relative z-10 px-8">
-        <h1 className="text-3xl font-bold text-white mb-6">All Movies</h1>
+        <h1 className="text-3xl font-bold text-white mb-6">
+          {query ? `Search Results for "${query}"` : 'All Movies'}
+        </h1>
 
         {loading && (
           <div className="flex justify-center items-center h-64">
@@ -54,12 +69,6 @@ const AllMovies = () => {
         {error && (
           <div className="bg-red-900/30 border border-red-500 rounded p-4 mb-6">
             <p className="text-red-300">{error}</p>
-            <button 
-              onClick={() => setCurrentPage(1)}
-              className="mt-2 px-4 py-2 bg-red-500/20 text-white rounded hover:bg-red-500/30"
-            >
-              Retry
-            </button>
           </div>
         )}
 
@@ -79,15 +88,12 @@ const AllMovies = () => {
                     >
                       <img
                         src={
-                          movie.poster_path 
+                          movie.poster_path
                             ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                             : '/placeholder-movie.png'
                         }
                         alt={movie.title}
                         className="w-full h-72 object-cover rounded"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/placeholder-movie.png';
-                        }}
                       />
                       <h2 className="mt-3 font-semibold text-lg line-clamp-1">{movie.title}</h2>
                       <p className="text-amber-400 text-sm">
@@ -100,6 +106,7 @@ const AllMovies = () => {
                   ))}
                 </div>
 
+                {/* Pagination */}
                 <div className="flex justify-center items-center gap-4">
                   <button
                     onClick={handlePrev}
@@ -108,11 +115,9 @@ const AllMovies = () => {
                   >
                     Previous
                   </button>
-
                   <span className="text-white font-semibold">
                     Page {currentPage} of {totalPages}
                   </span>
-
                   <button
                     onClick={handleNext}
                     disabled={currentPage === totalPages || loading}

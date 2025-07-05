@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
     if (searchQuery.trim()) {
       navigate(`/allmovies?query=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
-      setMenuOpen(false); // close menu if on mobile
+      setMenuOpen(false);
     }
   };
 

@@ -1,39 +1,42 @@
-import React from 'react';
+// src/pages/MovieInfo.tsx
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Calendar, Star } from 'lucide-react';
+import { fetchMovies } from '../api/tmbd';
 import MovieTabs from '../components/MovieTabs';
 
-const movie = {
-  title: "Ballerina",
-  overview:
-    "Taking place during the events of John Wick: Chapter 3 – Parabellum, Eve Macarro begins her training in the assassin traditions of the Ruska Roma.",
-  release_date: "2025-06-04",
-  vote_average: 7.242,
-  vote_count: 562,
-  original_language: "en",
-  popularity: 658.8665,
-  poster_path: "/mKp4euM5Cv3m2U1Vmby3OGwcD5y.jpg",
-  backdrop_path: "/sItIskd5xpiE64bBWYwZintkGf3.jpg",
-  genre_ids: [28, 53, 80],
-};
-
 const GENRE_MAP: Record<number, string> = {
-  28: "Action",
-  53: "Thriller",
-  80: "Crime",
-  12: "Adventure",
-  18: "Drama",
-  35: "Comedy",
-  10751: "Family",
-  16: "Animation",
-  14: "Fantasy",
-  27: "Horror",
-  878: "Sci-Fi",
-  10402: "Music",
+  28: 'Action',
+  53: 'Thriller',
+  80: 'Crime',
+  12: 'Adventure',
+  18: 'Drama',
+  35: 'Comedy',
+  10751: 'Family',
+  16: 'Animation',
+  14: 'Fantasy',
+  27: 'Horror',
+  878: 'Sci-Fi',
+  10402: 'Music',
 };
 
-const genreNames = movie.genre_ids.map((id) => GENRE_MAP[id]);
+const MovieInfo = () => {
+  const { id } = useParams();
+  const [movie, setMovie] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-const MoviesInfo = () => {
+  useEffect(() => {
+    if (id) {
+      fetchMovies(`/movie/${id}`).then((data) => {
+        setMovie(data);
+        setLoading(false);
+      });
+    }
+  }, [id]);
+
+  if (loading) return <p className="text-white text-center mt-10">Loading...</p>;
+  if (!movie) return <p className="text-white text-center mt-10">Movie not found.</p>;
+
   return (
     <div
       className="relative min-h-screen bg-cover bg-center text-white px-6 py-12"
@@ -41,13 +44,9 @@ const MoviesInfo = () => {
         backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
       }}
     >
-      {/* ✅ Dark overlay (no blur, or just slight) */}
-      <div className="absolute inset-0 bg-black/60 z-0" />
-
-      {/* ✅ Main Content */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-0" />
       <div className="relative z-10 p-8 rounded-xl max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row gap-10">
-          {/* Poster */}
           <div className="flex-shrink-0 w-48">
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -55,13 +54,9 @@ const MoviesInfo = () => {
               className="rounded-lg shadow-lg"
             />
           </div>
-
-          {/* Movie Info */}
           <div className="space-y-4 text-white max-w-3xl mt-6">
             <h1 className="text-4xl font-extrabold">{movie.title}</h1>
-
             <p className="text-lg text-gray-300">{movie.overview}</p>
-
             <div className="flex flex-wrap gap-6 text-sm mt-4">
               <p className="flex items-center gap-2">
                 <Calendar className="text-amber-500 w-4 h-4" />
@@ -74,36 +69,30 @@ const MoviesInfo = () => {
                 </span>
               </p>
               <p className="flex items-center gap-2">
-                <span className="font-semibold">Language:</span>{" "}
-                {movie.original_language.toUpperCase()}
+                <span className="font-semibold">Language:</span>{' '}
+                {movie.original_language?.toUpperCase()}
               </p>
               <p className="flex items-center gap-2">
-                <span className="font-semibold">Popularity:</span>{" "}
+                <span className="font-semibold">Popularity:</span>{' '}
                 {movie.popularity}
               </p>
             </div>
-
-            {/* Genre Tags */}
             <div className="flex flex-wrap gap-2 mt-4">
-              {genreNames.map((genre) => (
+              {movie.genres?.map((genre: { id: number; name: string }) => (
                 <span
-                  key={genre}
+                  key={genre.id}
                   className="bg-amber-600 text-white text-xs font-medium px-3 py-1 rounded-full"
                 >
-                  {genre}
+                  {genre.name || GENRE_MAP[genre.id]}
                 </span>
               ))}
             </div>
           </div>
         </div>
-
-        {/* ✅ Movie Tabs Section */}
-        <div className="mt-10">
-          <MovieTabs />
-        </div>
+        <MovieTabs overview={movie.overview} />
       </div>
     </div>
   );
 };
 
-export default MoviesInfo;
+export default MovieInfo;

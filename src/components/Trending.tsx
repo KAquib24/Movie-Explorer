@@ -9,28 +9,28 @@ const Trending = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchTrendingMovies = async () => {
       try {
         setLoading(true);
         setError(null);
         
         const response = await fetchMovies('/trending/movie/day');
         
-        // 1. Verify response has results array
-        if (response && Array.isArray(response.results)) {
+        // ✅ Critical fix: Verify we have an array before setting state
+        if (Array.isArray(response?.results)) {
           setMovies(response.results);
         } else {
-          throw new Error('Invalid API response format');
+          throw new Error('API response is not an array');
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        setError(err instanceof Error ? err.message : 'API error');
         setMovies([]); // Ensure movies is always an array
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchTrendingMovies();
   }, []);
 
   return (
@@ -43,23 +43,20 @@ const Trending = () => {
             Trending Movies
           </h1>
 
-          {loading && (
-            <div className="flex justify-center items-center h-64">
-              <p className="text-white">Loading movies...</p>
-            </div>
-          )}
-
+          {loading && <p className="text-white">Loading movies...</p>}
+          
           {error && (
-            <div className="bg-red-900/30 border border-red-500 rounded p-4 mb-6 mx-8">
-              <p className="text-red-300">{error}</p>
+            <div className="text-red-500 p-4">
+              Error: {error}
             </div>
           )}
 
-          {/* 2. Safe rendering with optional chaining */}
+          {/* ✅ Safe mapping with optional chaining */}
           <div className="flex flex-wrap gap-6 px-12">
-            {movies?.map((movie) => (
+            {movies?.map?.((movie) => (
               <MovieCard
                 key={movie.id}
+                id={movie.id} // ✅ Important: pass id here
                 title={movie.title}
                 year={movie.release_date?.split('-')[0] || 'N/A'}
                 duration="120 mins"
@@ -70,7 +67,7 @@ const Trending = () => {
                 }
                 quality={movie.vote_average >= 8 ? "4K" : "HD"}
               />
-            ))}
+            )) || null}
           </div>
         </div>
       </section>

@@ -3,7 +3,7 @@ import { fetchMovies } from '../api/tmbd';
 import MovieCard from '../components/MovieCard';
 import { Movie } from '../types/type';
 
-const Trending = () => {
+const Popular = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +40,7 @@ const Trending = () => {
 
         <div className="relative z-10">
           <h1 className="text-3xl text-white py-6 px-8 font-poppins font-extrabold">
-            Trending Movies
+            Popular Movies
           </h1>
 
           {loading && <p className="text-white">Loading movies...</p>}
@@ -56,6 +56,7 @@ const Trending = () => {
             {movies?.map?.((movie) => (
               <MovieCard
                 key={movie.id}
+                id={movie.id} 
                 title={movie.title}
                 year={movie.release_date?.split('-')[0] || 'N/A'}
                 duration="120 mins"
@@ -74,4 +75,4 @@ const Trending = () => {
   );
 };
 
-export default Trending;
+export default Popular;

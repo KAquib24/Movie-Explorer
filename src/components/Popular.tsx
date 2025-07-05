@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchMovies } from '../api/tmbd';
 import MovieCard from '../components/MovieCard';
 import { Movie } from '../types/type';
+import { Link } from 'react-router-dom';
 
 const Popular = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -70,6 +71,16 @@ const Popular = () => {
             )) || null}
           </div>
         </div>
+        {/* Show More Button */}
+<div className="text-center mt-8">
+  <Link
+    to="/allmovies"
+    className="text-white font-semibold bg-amber-600 hover:bg-amber-700 px-6 py-2 rounded-full transition"
+  >
+    Show More
+  </Link>
+</div>
+
       </section>
     </div>
   );

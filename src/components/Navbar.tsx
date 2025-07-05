@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Film, Search, User, Menu } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Film, Search, User, Menu } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/allmovies?query=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
+      setSearchQuery("");
       setMenuOpen(false);
     }
   };
@@ -27,10 +27,30 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-6 items-center font-poppins text-sm">
-          <a href="/" className="text-white hover:text-red-400 font-bold transition">Home</a>
-          <a href="/allmovies" className="text-gray-300 hover:text-red-400 font-bold transition">Movies</a>
-          <a href="#" className="text-gray-300 hover:text-red-400 font-bold transition">Actor</a>
-          <a href="#" className="text-gray-300 hover:text-red-400 font-bold transition">Web-Series</a>
+          <a
+            href="/"
+            className="text-white hover:text-red-400 font-bold transition"
+          >
+            Home
+          </a>
+          <a
+            href="/allmovies"
+            className="text-gray-300 hover:text-red-400 font-bold transition"
+          >
+            Movies
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:text-red-400 font-bold transition"
+          >
+            Actor
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:text-red-400 font-bold transition"
+          >
+            Web-Series
+          </a>
         </nav>
 
         {/* Search & Icons */}
@@ -63,14 +83,25 @@ const Navbar: React.FC = () => {
       {menuOpen && (
         <div className="md:hidden bg-black/95 px-6 py-4 space-y-4">
           <nav className="flex flex-col gap-2 font-medium">
-            <a href="/" className="text-white hover:text-red-400">Home</a>
-            <a href="/allmovies" className="text-gray-300 hover:text-red-400">Movies</a>
-            <a href="#" className="text-gray-300 hover:text-red-400">Actor</a>
-            <a href="#" className="text-gray-300 hover:text-red-400">Web-Series</a>
+            <a href="/" className="text-white hover:text-red-400">
+              Home
+            </a>
+            <a href="/allmovies" className="text-gray-300 hover:text-red-400">
+              Movies
+            </a>
+            <a href="#" className="text-gray-300 hover:text-red-400">
+              Actor
+            </a>
+            <a href="#" className="text-gray-300 hover:text-red-400">
+              Web-Series
+            </a>
           </nav>
 
           {/* Mobile Search */}
-          <form onSubmit={handleSearch} className="flex items-center gap-2 pt-4">
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center gap-2 pt-4"
+          >
             <input
               type="text"
               value={searchQuery}
